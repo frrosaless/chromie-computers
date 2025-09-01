@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body>
     <nav class="navbar bg-dark navbar-expand-lg navbar-dark fixed-top shadow">
         <div class="container">
-            <img src="../assets/images/chromie.jpg" alt="Icono de Chromie Computers" width="40" height="40" class="img-icon-logo d-inline-block align-text-top rounded-circle">
+            <img src="../../assets/images/chromie.jpg" alt="Icono de Chromie Computers" width="40" height="40" class="img-icon-logo d-inline-block align-text-top rounded-circle">
             <a class="navbar-brand" href="/">Chromie Computers</a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse bg-dark" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../procesadores.html">Volver</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Carrito</a></li>
-                    <li class="nav-item"><a class="nav-link" href="registro.html">Registro</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../registro.html">Registro</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" style="color: rgb(204, 169, 53)">Iniciar sesion</a></li>
                 </ul>
             </div>
@@ -27,7 +27,7 @@
     </nav>
 
     <section class="banner">
-        <img src="../assets/images/procesador-cat.webp" alt="Banner principal">
+        <img src="../../assets/images/procesador-cat.webp" alt="Banner principal">
             <div class="banner-text text-center mt-4">
                 <h3 class="card-title">Procesadores</h3>
                 <h6 class="card-text">Encuentra los mejores procesadores para potenciar tu computador. Disponemos de modelos Intel y AMD que ofrecen alto rendimiento, eficiencia y velocidad para gaming, trabajo y tareas profesionales.</h6>
@@ -36,37 +36,37 @@
 
     <main class="container mt-2 pt-5">
         <div class="box shadow p-4">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-                <div class="col">
-                    <div class="card bg-dark text-white shadow">
-                        <img src="../assets/images/inteli5.jpeg" class="card-img-top" alt="Producto">
+            <div class="card bg-dark text-white mb-3 ">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="../../assets/images/inteli5.jpeg" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">Intel Core i5-12400</h5>
-                            <p class="card-text">Procesador Intel Core i5-12400, 2.5GHz Turbo 4.4GHz, Socket LGA 1700, 6-Core / 12-Threads</p>
-                            <p class="card-text fw-bold">$299.990 CLP</p>
-                            <div class="gap-2 d-grid">
-                                <a href="especificaciones/proce-intel.html" class="btn btn-secondary w-100">Especificaciones</a>
-                                <button class="btn btn-primary w-100">Agregar al carrito</button>
+                            <ul class="list-unstyled mb-2">
+                                <li>Familia de procesador: Intel® Core™ i5</li>
+                                <li>Número de núcleos de procesador: 6</li>
+                                <li>Socket de procesador: LGA 1700</li>
+                                <li>Refrigerador incluido: Sí</li>
+                                <li>Modelo del procesador: i5-12400</li>
+                                <li>Modo de procesador operativo: 64 bits</li>
+                                <li>Generación: Intel® Core™ i5 de 12ma Generación</li>
+                                <li>Número de hilos de ejecución: 12</li>
+                                <li>Frecuencia de aceleración de núcleo de rendimiento: 4,4 GHz</li>
+                                <li>Frecuencia base de núcleo de rendimiento: 2,5 GHz</li>
+                                <li>Caché del procesador: 18 MB</li>
+                                <li>Tipo de caché en procesador: Smart Cache</li>
+                                <li>Potencia base del procesador: 65 W</li>
+                            </ul>
+                            <div class="gap-2 d-flex justify-content-between">
+                                <h2 class="card-text fw-bold w-50">$489.990 CLP</h2>
+                                <button class="btn btn-primary w-50">Agregar al carrito</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card bg-dark text-white shadow">
-                        <img src="../assets/images/amdr7.jpg" class="card-img-top" alt="Producto">
-                        <div class="card-body">
-                            <h5 class="card-title">AMD Ryzen 7 5700G</h5>
-                            <p class="card-text">Procesador AMD Ryzen 7 5700G, AM4 , 8-Core, 3,8Ghz (Max boost 4.6Ghz), Radeon Vega Graphics</p>
-                            <p class="card-text fw-bold">$489.990 CLP</p>
-                            <div class="gap-2 d-grid">
-                                <button class="btn btn-secondary w-100">Especificaciones</button>
-                                <button class="btn btn-primary w-100">Agregar al carrito</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>                
-                    
-            </div>
+            </div>   
         </div>
     </main>
 

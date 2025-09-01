@@ -17,7 +17,7 @@ const camposLogin = {
             required: "La contraseña es obligatoria.",
             format: "La contraseña debe tener entre 8 y 16 caracteres, incluyendo una mayúscula, una minúscula y un número."
         }
-    },
+    }
 };
 
 function mostrarError(id, mensaje) {

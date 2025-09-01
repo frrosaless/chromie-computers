@@ -1,3 +1,4 @@
+// Validacion formulario registro
 const form = document.getElementById("form-registro");
 const campos = {
     fullname: {

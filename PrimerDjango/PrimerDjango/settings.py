@@ -143,3 +143,8 @@ LOGIN_URL = '/iniciosesion/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+ROLES = (
+    ('admin', 'Administrador'),
+    ('cliente', 'Cliente')
+)

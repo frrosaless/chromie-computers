@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .forms import CustomUserCreationForm
 
@@ -160,7 +161,7 @@ def crear_producto(request):
             marca=marca,
             imagen=imagen
         )
-        return redirect('lista_productos')
+        messages.success(request, 'Producto creado correctamente.')
     categorias = Categoria.objects.all()
     marcas = Marca.objects.all()
     context = {
@@ -173,7 +174,7 @@ def crear_marca(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         Marca.objects.create(nombre=nombre)
-        return redirect('lista_dual')
+        messages.success(request, 'Marca creada correctamente.')
     return render(request, 'productos/crearmarca.html')
 
 def crear_categoria(request):
@@ -181,7 +182,7 @@ def crear_categoria(request):
         nombre = request.POST.get('nombre')
         imagen = request.FILES.get('imagen')
         Categoria.objects.create(nombre=nombre, imagen=imagen)
-        return redirect('lista_dual')
+        messages.success(request, 'Categoría creada correctamente.')
     return render(request, 'productos/crearcat.html')
 
 def editar_producto(request, id):
@@ -204,6 +205,7 @@ def editar_producto(request, id):
             producto.imagen = request.FILES['imagen']
 
         producto.save()
+        messages.success(request, 'Producto actualizado correctamente.')
 
     categorias = Categoria.objects.all()
     marcas = Marca.objects.all()
@@ -220,7 +222,7 @@ def editar_marca(request, id):
     if request.method == 'POST':
         marca.nombre = request.POST.get('nombre')
         marca.save()
-
+        messages.success(request, 'Marca actualizada correctamente.')
     context = {
         'marca': marca
     }
@@ -234,7 +236,7 @@ def editar_categoria(request, id):
         if 'imagen' in request.FILES:
             categoria.imagen = request.FILES['imagen']
         categoria.save()
-
+        messages.success(request, 'Categoría actualizada correctamente.')
     context = {
         'categoria': categoria
     }
@@ -243,17 +245,19 @@ def editar_categoria(request, id):
 def eliminar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
     producto.delete()
-
+    messages.success(request, 'Producto eliminado correctamente.')
     return redirect('lista_productos')
 
 def eliminar_marca(request, id):
     marca = get_object_or_404(Marca, id=id)
     marca.delete()
+    messages.success(request, 'Marca eliminada correctamente.')
 
     return redirect('lista_dual')
 
 def eliminar_categoria(request, id):
     categoria = get_object_or_404(Categoria, id=id)
     categoria.delete()
+    messages.success(request, 'Categoría eliminada correctamente.')
 
     return redirect('lista_dual')

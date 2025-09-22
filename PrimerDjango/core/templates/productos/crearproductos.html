@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulopagina %}Ingresa un Producto{% endblock %}
+                {% block menunavegacion %}
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'index_dyn' %}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
+                        <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'lista_productos' %}">Volver</a></li>
+                        <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'crear_producto' %}">Ingresar Producto</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cerrarsesion_dyn' %}">Salir</a></li>
+                    {% endif %}
+                {% endblock %}
+{% block imagenbanner %}"{% static 'assets/images/chromiew.jpg' %}"{% endblock %}
+            {% block descbanner %}
+                <h3 class="card-title">Ingresa un Producto</h3>
+                <h6 class="card-text">Completa el siguiente formulario para agregar un nuevo producto a la tienda.</h6>
+            {% endblock %}
+{% block contenido %}
+        <div class="box shadow p-4">
+            <h1 class="text-white">Ingresa los datos del producto</h1>
+            <form id="form-crearproducto" class="text-white w-100 mx-auto" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre del producto <span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" autocomplete="off" placeholder="Ingresa el nombre del producto" required>
+                    <div class="invalid-feedback" id="error-nombre"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción <span style="color: red;">*</span></label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Ingresa una descripción del producto" required></textarea>
+                    <div class="invalid-feedback" id="error-descripcion"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="precio" class="form-label">Precio <span style="color: red;">*</span></label>
+                    <input type="number" class="form-control" id="precio" name="precio" step="0.01" placeholder="Ingresa el precio del producto" required>
+                    <div class="invalid-feedback" id="error-precio"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Stock <span style="color: red;">*</span></label>
+                    <input type="number" class="form-control" id="stock" name="stock" placeholder="Ingresa la cantidad en stock" required>
+                    <div class="invalid-feedback" id="error-stock"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="categoria" class="form-label">Categoría <span style="color: red;">*</span></label>
+                    <select class="form-select" id="categoria" name="categoria">
+                        <option value="">Selecciona una categoría</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback" id="error-categoria"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="marca" class="form-label">Marca <span style="color: red;">*</span></label>
+                    <select class="form-select" id="marca" name="marca">
+                        <option value="">Selecciona una marca</option>
+                        {% for marca in marcas %}
+                            <option value="{{ marca.id }}">{{ marca.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback" id="error-marca"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="imagen" class="form-label">Imagen <span style="color: red;">*</span></label>
+                    <input type="file" class="form-control" id="imagen" name="imagen">
+                    <div class="invalid-feedback" id="error-imagen"></div>
+                </div>
+                <div class="d-flex justify-content-between gap-5">
+                    <button type="submit" class="btn btn-primary w-50">Crear Producto</button>
+                    <a href="{% url 'lista_productos' %}" class="btn btn-secondary w-50">Cancelar</a>
+                </div>
+            </form>
+        </div>
+{% endblock %}

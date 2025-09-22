@@ -16,15 +16,6 @@ class Marca(models.Model):
     def __str__(self):
         return self.nombre
 
-class Proveedor(models.Model):
-    nombre = models.CharField(max_length=100)
-    direccion = models.CharField(max_length=200)
-    telefono = models.CharField(max_length=15)
-    email = models.EmailField()
-
-    def __str__(self):
-        return self.nombre
-    
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
@@ -32,7 +23,7 @@ class Producto(models.Model):
     stock = models.IntegerField()
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
-    proveedor = models.ForeignKey('Proveedor', on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
 
     def __str__(self):
         return self.nombre

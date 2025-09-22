@@ -15,7 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from core.views import index_dyn, registro_dyn, iniciosesion_dyn, cerrarsesion_dyn, carrito_dyn, admincuenta_dyn, olvidecontrasena_dyn, almacenamiento_dyn
 from core.views import fuentes_dyn, gabinetes_dyn, memorias_dyn, placasmadres_dyn, procesadores_dyn, tarjetasdevideo_dyn, almace_wd_dyn
@@ -44,4 +46,5 @@ urlpatterns = [
     path("ram-king/", ram_king_dyn, name="ram_king_dyn"),
     path("video-giga/", video_giga_dyn, name="video_giga_dyn"),
     path("cerrar_sesion/", cerrarsesion_dyn, name="cerrarsesion_dyn"),
-]
+    path('', include('core.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

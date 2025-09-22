@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulopagina %}Lista de marcas y categorias{% endblock %}
+                {% block menunavegacion %}
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'index_dyn' %}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
+                        <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'lista_productos' %}">Volver</a></li>
+                        <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'lista_dual' %}">Marcas y Categorias</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cerrarsesion_dyn' %}">Salir</a></li>
+                    {% endif %}
+                {% endblock %}
+{% block imagenbanner %}"{% static 'assets/images/chromiew.jpg' %}"{% endblock %}
+            {% block descbanner %}
+                <h3 class="card-title">Lista de marcas y categorias</h3>
+                <h6 class="card-text">Aquí puedes ver todas las marcas y categorías disponibles en la tienda.</h6>
+            {% endblock %}
+{% block contenido %}
+        <div class="box shadow p-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-2">
+                <div class="col">
+                    <h1 class="text-white">Marcas</h1>
+                    <ul class="list-unstyled">
+                        {% for marca in marcas %}
+                            <div class="d-flex justify-content-between gap-5 p-2 align-items-center">
+                                <li class="mb-2 text-white">{{ marca.nombre }}</li>
+                                <div class="ms-auto d-flex gap-2">
+                                    <a href="{% url 'editar_marca' id=marca.id %}" class="btn btn-secondary w-100">Editar</a>
+                                    <a href="{% url 'eliminar_marca' id=marca.id %}" class="btn btn-danger">Eliminar</a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <li class="mb-2 text-white">No hay marcas disponibles.</li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{% url 'crear_marca' %}" class="btn btn-primary w-50">Agregar</a>
+                </div>
+                <div class="col">
+                    <h1 class="text-white">Categorias</h1>
+                    <ul class="list-unstyled">
+                        {% for categoria in categorias %}
+                            <div class="d-flex justify-content-between gap-5 p-2 align-items-center">
+                                <li class="mb-2 text-white">{{ categoria.nombre }}</li>
+                                <div class="ms-auto d-flex gap-2">
+                                    <a href="{% url 'editar_categoria' id=categoria.id %}" class="btn btn-secondary">Editar</a>
+                                    <a href="{% url 'eliminar_categoria' id=categoria.id %}" class="btn btn-danger">Eliminar</a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <li class="mb-2 text-white">No hay categorías disponibles.</li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{% url 'crear_categoria' %}" class="btn btn-primary w-50">Agregar</a>
+                </div>
+            </div>
+        </div>
+{% endblock %}

@@ -7,6 +7,7 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
                     {% else %}
+                        <li class="nav-item"><a class="nav-link" href="">Hola {{ request.user.username }}!</a></li>
                         <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'gabinetes_dyn' %}">Volver</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'carrito_dyn' %}">Carrito</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'admincuenta_dyn' %}">Administrar Cuenta</a></li>

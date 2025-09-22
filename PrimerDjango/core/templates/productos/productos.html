@@ -7,6 +7,8 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
                     {% else %}
+                        <li class="nav-item"><a class="nav-link" href="">Hola {{ request.user.username }}!</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'index_dyn' %}">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'lista_dual' %}">Marcas y Categorias</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'crear_producto' %}">Ingresar Producto</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'cerrarsesion_dyn' %}">Salir</a></li>
@@ -14,7 +16,7 @@
                 {% endblock %}
 {% block imagenbanner %}"{% static 'assets/images/chromiew.jpg' %}"{% endblock %}
             {% block descbanner %}
-                <h3 class="card-title">Productos</h3>
+                <h3 class="card-title">Listado de Productos</h3>
                 <h6 class="card-text"> </h6>
             {% endblock %} 
 {% block contenido %}

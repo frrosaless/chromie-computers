@@ -6,6 +6,10 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
                     {% else %}
+                        <li class="nav-item"><a class="nav-link" href="">Hola {{ request.user.username }}!</a></li>
+                        {% if perfil == 'admin' %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'lista_productos' %}">Panel de Administrador</a></li>
+                        {% endif %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'carrito_dyn' %}">Carrito</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'admincuenta_dyn' %}">Administrar Cuenta</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'cerrarsesion_dyn' %}">Salir</a></li>
@@ -13,7 +17,7 @@
                 {% endblock %}
 {% block imagenbanner %}"{% static 'assets/images/chromiew.jpg' %}"{% endblock %}
             {% block descbanner %}
-                <h3 class="card-title">Productos</h3>
+                <h3 class="card-title">Categorias</h3>
                 <h6 class="card-text">Explora nuestras categorías de componentes de computador y encuentra todo lo que necesitas para armaro mejorar tu PC. Desde procesadores y tarjetas gráficas hasta memorias RAM, discos duros, fuentes de poder y más.</h6>
             {% endblock %}
 {% block contenido %}

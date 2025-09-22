@@ -94,8 +94,9 @@ DATABASES = {
     }
 }
 
-# superuser: admin admin1
+# superuser: admin Franco123
 # usuario prueba: comprador Chromie1
+# cliente Dawz Nicky123
 # staff: manager Chromie1
 
 # Password validation

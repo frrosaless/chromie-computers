@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from core.views import index_dyn, registro_dyn, iniciosesion_dyn, carrito_dyn, admincuenta_dyn, olvidecontrasena_dyn
+from core.views import index_dyn, registro_dyn, iniciosesion_dyn, carrito_dyn, admincuenta_dyn, olvidecontrasena_dyn, almacenamiento_dyn
+from core.views import fuentes_dyn, gabinetes_dyn, memorias_dyn, placasmadres_dyn, procesadores_dyn, tarjetasdevideo_dyn, almace_wd_dyn
+from core.views import fuente_giga_dyn, gab_antec_dyn, placa_giga_dyn, proce_intel_dyn, ram_king_dyn, video_giga_dyn
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +29,18 @@ urlpatterns = [
     path("carrito/", carrito_dyn, name="carrito_dyn"),
     path("admincuenta/", admincuenta_dyn, name="admincuenta_dyn"),
     path("olvidecontrasena/", olvidecontrasena_dyn, name="olvidecontrasena_dyn"),
+    path("almacenamiento/", almacenamiento_dyn, name="almacenamiento_dyn"),
+    path("fuentes/", fuentes_dyn, name="fuentes_dyn"),
+    path("gabinetes/", gabinetes_dyn, name="gabinetes_dyn"),
+    path("memorias/", memorias_dyn, name="memorias_dyn"),
+    path("placasmadres/", placasmadres_dyn, name="placasmadres_dyn"),
+    path("procesadores/", procesadores_dyn, name="procesadores_dyn"),
+    path("tarjetasdevideo/", tarjetasdevideo_dyn, name="tarjetasdevideo_dyn"),
+    path("almace-wd/", almace_wd_dyn, name="almace_wd_dyn"),
+    path("fuente-giga/", fuente_giga_dyn, name="fuente_giga_dyn"),
+    path("gab-antec/", gab_antec_dyn, name="gab_antec_dyn"),
+    path("placa-giga/", placa_giga_dyn, name="placa_giga_dyn"),
+    path("proce-intel/", proce_intel_dyn, name="proce_intel_dyn"),
+    path("ram-king/", ram_king_dyn, name="ram_king_dyn"),
+    path("video-giga/", video_giga_dyn, name="video_giga_dyn"),
 ]

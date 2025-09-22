@@ -95,6 +95,10 @@ DATABASES = {
     }
 }
 
+# superuser: admin admin1
+# usuario prueba: comprador chromie1
+# staff: manager chromie1
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 

@@ -38,6 +38,7 @@
         <div class="box shadow p-4">
             <h1 class="text-white">Ingresa tus datos</h1>
             <form id="form-iniciosesion" class="text-white w-100 mx-auto" method="post">
+                {% csrf_token %}
                 <div class="mb-3">
                     <label for="username" class="form-label">Nombre de usuario <span style="color: red;">*</span></label>
                     <input type="text" class="form-control" id="username" name="username" autocomplete="off" placeholder="Ingresa tu nombre de usuario">

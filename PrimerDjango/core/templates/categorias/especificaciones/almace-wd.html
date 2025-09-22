@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,29 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chromie Computers</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <nav class="navbar bg-dark navbar-expand-lg navbar-dark fixed-top shadow">
         <div class="container">
-            <img src="../../assets/images/chromie.jpg" alt="Icono de Chromie Computers" width="40" height="40" class="img-icon-logo d-inline-block align-text-top rounded-circle">
-            <a class="navbar-brand" href="/">Chromie Computers</a>
+            <img src="{% static 'assets/images/chromie.jpg' %}" alt="Icono de Chromie Computers" width="40" height="40" class="img-icon-logo d-inline-block align-text-top rounded-circle">
+            <a class="navbar-brand" href="{% url 'index_dyn' %}">Chromie Computers</a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse bg-dark" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="../almacenamiento.html">Volver</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../carrito.html">Carrito</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../registro.html">Registro</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../iniciosesion.html" style="color: rgb(204, 169, 53)">Iniciar sesion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'almacenamiento_dyn' %}">Volver</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'carrito_dyn' %}">Carrito</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}" style="color: rgb(204, 169, 53)">Iniciar sesion</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <section class="banner">
-        <img src="../../assets/images/disk-cat.jpg" alt="Banner principal">
+        <img src="{% static 'assets/images/disk-cat.jpg' %}" alt="Banner principal">
             <div class="banner-text text-center mt-4">
                 <h3 class="card-title">Unidades de Almacenamiento</h3>
                 <h6 class="card-text">Descubre nuestra selección de discos duros y unidades SSD para mejorar la velocidad y capacidad de tu computador. Elige entre opciones rápidas, seguras y confiables para almacenar tus archivos, programas y proyectos sin límites.</h6>
@@ -39,7 +40,7 @@
             <div class="card bg-dark text-white mb-3 ">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="../../assets/images/hdd-wd.jpg" class="img-fluid rounded-start" alt="...">
+                        <img src="{% static 'assets/images/hdd-wd.jpg' %}" class="img-fluid rounded-start" alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

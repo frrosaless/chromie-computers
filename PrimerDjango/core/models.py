@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 # categoria, marca, producto, proveedor, cliente, venta, detalle venta
@@ -36,13 +37,16 @@ class Producto(models.Model):
         return self.nombre
     
 class Cliente(models.Model):
-    nombre = models.CharField(max_length=100)
-    direccion = models.CharField(max_length=200)
-    telefono = models.CharField(max_length=15)
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    address = models.CharField(max_length=200)
+    birthdate = models.DateField()
     email = models.EmailField()
 
     def __str__(self):
-        return self.nombre
+        return self.firstname
 
 class Venta(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
@@ -50,7 +54,7 @@ class Venta(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"Venta {self.id} - {self.cliente.nombre}"
+        return f"Venta {self.id} - {self.cliente.firstname}"
     
 class DetalleVenta(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE)

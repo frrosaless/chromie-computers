@@ -1,4 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
+from .forms import CustomUserCreationForm
 
 # Create your views here.
 def index_dyn(request):
@@ -9,7 +14,58 @@ def registro_dyn(request):
     return render(request, 'menu/registro.html')
 
 def iniciosesion_dyn(request):
-    return render(request, 'menu/iniciosesion.html')
+    if request.method == 'POST':
+        forminiciosesion = AuthenticationForm(data=request.POST)
+        if forminiciosesion.is_valid():
+            username = forminiciosesion.cleaned_data.get('username')
+            password = forminiciosesion.cleaned_data.get('password')
+            username = authenticate(username=username, password=password)
+            if username is None:
+                context = {
+                    'forminiciosesion': forminiciosesion,
+                    'error': "Usuario o contraseña incorrectos"
+                }
+                return render(request, 'menu/iniciosesion.html', context)
+            else:
+                login(request, username)
+                return redirect('index_dyn')
+        else:
+            context = {
+                'forminiciosesion': forminiciosesion,
+                'error': "Usuario o contraseña incorrectos"
+            }
+            return render(request, 'menu/iniciosesion.html', context)
+    else:
+        forminiciosesion = AuthenticationForm()
+        context = {
+            'forminiciosesion': forminiciosesion
+        }
+    return render(request, 'menu/iniciosesion.html', context)
+
+def registro_dyn(request):
+    if request.method == 'POST':
+        formularioregistro = CustomUserCreationForm(request.POST)
+        if formularioregistro.is_valid():
+            formularioregistro.save()
+            return redirect('iniciosesion_dyn')
+        else:
+            contexto = {
+                'formularioregistro': formularioregistro
+            }
+            return render(request, 'menu/registro.html', contexto)
+    else:
+        formularioregistro = CustomUserCreationForm()
+        contexto = {
+            'formularioregistro': formularioregistro
+        }
+        return render(request, 'menu/registro.html', contexto)
+
+    
+
+@login_required
+def cerrarsesion_dyn(request):
+    logout(request)
+    return redirect('index_dyn')
 
 def carrito_dyn(request):
     return render(request, 'menu/carrito.html')

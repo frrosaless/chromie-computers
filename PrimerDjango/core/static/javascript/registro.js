@@ -1,13 +1,24 @@
 // Validacion formulario registro
 const form = document.getElementById("form-registro");
 const campos = {
-    fullname: {
+    first_name: {
         required: true,
-        regex: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,50}$/,
+        // Solo letras y tildes, sin espacios
+        regex: /^[A-Za-zÁÉÍÓÚáéíóúÑñ]{3,50}$/,
         error: {
             required: "El nombre es obligatorio.",
             length: "El nombre debe tener entre 3 y 50 caracteres.",
-            format: "Solo se permiten letras, espacios, eñes y tildes."
+            format: "Solo se permiten letras y tildes, sin espacios."
+        }
+    },
+    last_name: {
+        required: true,
+        // Solo letras y tildes, sin espacios
+        regex: /^[A-Za-zÁÉÍÓÚáéíóúÑñ]{3,50}$/,
+        error: {
+            required: "El apellido es obligatorio.",
+            length: "El apellido debe tener entre 3 y 50 caracteres.",
+            format: "Solo se permiten letras y tildes, sin espacios."
         }
     },
     username: {
@@ -27,7 +38,7 @@ const campos = {
             format: "El correo electrónico no es válido."
         }
     },
-    password: {
+    password1: {
         required: true,
         regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$/,
         error: {
@@ -35,7 +46,7 @@ const campos = {
             format: "La contraseña debe tener entre 8 y 16 caracteres, incluyendo una mayúscula, una minúscula y un número."
         }
     },
-    confirmPassword: {
+    password2: {
         required: true,
         matchField: "password",
         error: {
@@ -60,6 +71,23 @@ const campos = {
     }
 };
 
+// ...existing code...
+function mostrarError(id, mensaje) {
+    const input = document.getElementById(id);
+    if (input) input.classList.add("is-invalid");
+    const errorSpan = document.getElementById("error-" + id);
+    if (errorSpan) errorSpan.textContent = mensaje;
+}
+
+function limpiarError(id) {
+    const input = document.getElementById(id);
+    if (input) input.classList.remove("is-invalid");
+    const errorSpan = document.getElementById("error-" + id);
+    if (errorSpan) errorSpan.textContent = "";
+}
+// ...existing code...
+
+/*
 function mostrarError(id, mensaje) {
     const input = document.getElementById(id);
     input.classList.add("is-invalid");
@@ -71,23 +99,38 @@ function limpiarError(id) {
     input.classList.remove("is-invalid");
     document.getElementById("error-" + id).textContent = "";
 }        
-
+*/
 form.addEventListener("submit", function(event) {
     let valido = true;
 
     Object.keys(campos).forEach(campo => limpiarError(campo));
 
-    const fullname = form.fullname.value.trim();
-    if(campos.fullname.required) {
-        const fullname = form.fullname.value.trim();
-        if(fullname === "") {
-            mostrarError("fullname", campos.fullname.error.required);
+    const first_name = form.first_name.value.trim();
+    if(campos.first_name.required) {
+        const first_name = form.first_name.value.trim();
+        if(first_name === "") {
+            mostrarError("first_name", campos.first_name.error.required);
             valido = false;
-        } else if(fullname.length < 3 || fullname.length > 50) {
-            mostrarError("fullname", campos.fullname.error.length);
+        } else if(first_name.length < 3 || first_name.length > 50) {
+            mostrarError("first_name", campos.first_name.error.length);
             valido = false;
-        } else if(!campos.fullname.regex.test(fullname)) {
-            mostrarError("fullname", campos.fullname.error.format);
+        } else if(!campos.first_name.regex.test(first_name)) {
+            mostrarError("first_name", campos.first_name.error.format);
+            valido = false;
+        }
+    }
+
+    const last_name = form.last_name.value.trim();
+    if(campos.last_name.required) {
+        const last_name = form.last_name.value.trim();
+        if(last_name === "") {
+            mostrarError("last_name", campos.last_name.error.required);
+            valido = false;
+        } else if(last_name.length < 3 || last_name.length > 50) {
+            mostrarError("last_name", campos.last_name.error.length);
+            valido = false;
+        } else if(!campos.last_name.regex.test(last_name)) {
+            mostrarError("last_name", campos.last_name.error.format);
             valido = false;
         }
     }
@@ -117,24 +160,24 @@ form.addEventListener("submit", function(event) {
         }
     }
 
-    const password = form.password.value;
-    if(campos.password.required) {
-        if(password === "") {
-            mostrarError("password", campos.password.error.required);
+    const password1 = form.password1.value;
+    if(campos.password1.required) {
+        if(password1 === "") {
+            mostrarError("password1", campos.password1.error.required);
             valido = false;
-        } else if(!campos.password.regex.test(password)) {
-            mostrarError("password", campos.password.error.format);
+        } else if(!campos.password1.regex.test(password1)) {
+            mostrarError("password1", campos.password1.error.format);
             valido = false;
         }
     }
 
-    const confirmPassword = form.confirmPassword.value;
-    if(campos.confirmPassword.required) {   
-        if(confirmPassword === "") {
-            mostrarError("confirmPassword", campos.confirmPassword.error.required);
+    const password2 = form.password2.value;
+    if(campos.password2.required) {
+        if(password2 === "") {
+            mostrarError("password2", campos.password2.error.required);
             valido = false;
-        } else if(confirmPassword !== password) {
-            mostrarError("confirmPassword", campos.confirmPassword.error.match);
+        } else if(password2 !== password1) {
+            mostrarError("password2", campos.password2.error.match);
             valido = false;
         }
     }
@@ -176,9 +219,22 @@ form.addEventListener("submit", function(event) {
 
 });
 
+// ...existing code...
+Object.keys(campos).forEach(campo => {
+    const input = document.getElementById(campo);
+    if (input) {
+        input.addEventListener("input", function() {
+            limpiarError(campo);
+        });
+    }
+});
+// ...existing code...
+
+/*
 Object.keys(campos).forEach(campo => {
     const input = document.getElementById(campo);
     input.addEventListener("input", function() {
         limpiarError(campo);
     });
 });
+*/

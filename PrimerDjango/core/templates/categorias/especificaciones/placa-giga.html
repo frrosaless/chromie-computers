@@ -18,10 +18,16 @@
             </button>
             <div class="collapse navbar-collapse bg-dark" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'placasmadre_dyn' %}">Volver</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'carrito_dyn' %}">Carrito</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}" style="color: rgb(204, 169, 53)">Iniciar sesion</a></li>
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'placasmadre_dyn' %}">Volver</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'placasmadre_dyn' %}">Volver</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'carrito_dyn' %}">Carrito</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admincuenta_dyn' %}">Administrar Cuenta</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cerrarsesion_dyn' %}">Salir</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

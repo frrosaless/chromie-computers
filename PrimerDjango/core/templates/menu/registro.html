@@ -18,9 +18,15 @@
             </button>
             <div class="collapse navbar-collapse bg-dark" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index_dyn' %}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'registro_dyn' %}">Registro</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}" style="color: rgb(204, 169, 53)">Iniciar sesion</a></li>
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'index_dyn' %}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link fw-bold" href="{% url 'registro_dyn' %}">Registro</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'carrito_dyn' %}">Carrito</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admincuenta_dyn' %}">Administrar Cuenta</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cerrarsesion_dyn' %}">Salir</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -38,10 +44,18 @@
         <div class="box shadow p-4">
             <h1 class="text-white">Ingresa tus datos</h1>
             <form id="form-registro" class="text-white w-100 mx-auto" method="post">
-                <div class="mb-3">
-                    <label for="fullname" class="form-label">Nombre completo <span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="fullname" name="fullname" autocomplete="off" placeholder="Ingresa tu nombre completo">
-                    <div class="invalid-feedback" id="error-fullname"></div>
+                {% csrf_token %}
+                <div class="d-flex justify-content-between gap-5">
+                    <div class="mb-3 w-50">
+                        <label for="first_name" class="form-label">Nombre <span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" autocomplete="off" placeholder="Ingresa tu nombre">
+                        <div class="invalid-feedback" id="error-first_name"></div>
+                    </div>
+                    <div class="mb-3 w-50">
+                        <label for="last_name" class="form-label">Apellido <span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" autocomplete="off" placeholder="Ingresa tu apellido">
+                        <div class="invalid-feedback" id="error-last_name"></div>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="username" class="form-label">Nombre de usuario <span style="color: red;">*</span></label>
@@ -54,14 +68,14 @@
                     <div class="invalid-feedback" id="error-email"></div>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña <span style="color: red;">*</span></label>
-                    <input type="password" class="form-control" id="password" name="password" autocomplete="off" placeholder="Ingresa tu contraseña">
-                    <div class="invalid-feedback" id="error-password"></div>
+                    <label for="password1" class="form-label">Contraseña <span style="color: red;">*</span></label>
+                    <input type="password" class="form-control" id="password1" name="password1" autocomplete="off" placeholder="Ingresa tu contraseña">
+                    <div class="invalid-feedback" id="error-password1"></div>
                 </div>
                 <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirmar contraseña <span style="color: red;">*</span></label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" autocomplete="off" placeholder="Confirma tu contraseña">
-                    <div class="invalid-feedback" id="error-confirmPassword"></div>
+                    <label for="password2" class="form-label">Confirmar contraseña <span style="color: red;">*</span></label>
+                    <input type="password" class="form-control" id="password2" name="password2" autocomplete="off" placeholder="Confirma tu contraseña">
+                    <div class="invalid-feedback" id="error-password2"></div>
                 </div>
                 <div class="mb-3">
                     <label for="birthdate" class="form-label">Fecha de nacimiento <span style="color: red;">*</span></label>
@@ -73,6 +87,11 @@
                     <input type="text" class="form-control" id="address" name="address" autocomplete="off" placeholder="Ingresa tu direccion de despacho (Opcional)">
                     <div class="invalid-feedback" id="error-address"></div>
                 </div>
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
                 <div class="d-flex justify-content-between gap-5">                
                     <button type="submit" class="btn btn-primary w-50">Registrarse</button>
                     <button type="reset" class="btn btn-secondary w-50">Limpiar</button>

@@ -3,11 +3,13 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .decorators import role_required
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from .forms import CustomUserCreationForm
-
+from .decorators import role_required
 from .models import Categoria, Marca, Producto, UserProfile
+from .serializers import CategoriaSerializer, MarcaSerializer, ProductoSerializer
 
 # Create your views here.
 def index_dyn(request):
@@ -282,3 +284,26 @@ def eliminar_categoria(request, id):
     messages.success(request, 'Categoría eliminada correctamente.')
 
     return redirect('lista_dual')
+
+# definicion de api views
+
+@api_view(['GET'])
+def api_categorias(request):
+    categorias = Categoria.objects.all()
+    serializer = CategoriaSerializer(categorias, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def api_productos_categoria(request, idcategoria=None):
+    if idcategoria:
+        productos = Producto.objects.filter(categoria_id=idcategoria)
+    else:
+        productos = Producto.objects.all()
+    serializer = ProductoSerializer(productos, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def api_marcas(request):
+    marcas = Marca.objects.all()
+    serializer = MarcaSerializer(marcas, many=True)
+    return Response(serializer.data)

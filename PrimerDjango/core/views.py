@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
@@ -5,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 
 from .forms import CustomUserCreationForm
 from .decorators import role_required
@@ -286,7 +288,6 @@ def eliminar_categoria(request, id):
     return redirect('lista_dual')
 
 # definicion de api views
-
 @api_view(['GET'])
 def api_categorias(request):
     categorias = Categoria.objects.all()
@@ -307,3 +308,24 @@ def api_marcas(request):
     marcas = Marca.objects.all()
     serializer = MarcaSerializer(marcas, many=True)
     return Response(serializer.data)
+
+# APIs externas de noticias
+@api_view(['GET'])
+def api_noticias_gaming(request):
+    response = requests.get(
+        url='https://newsapi.org/v2/everything?q=gaming&apiKey=9f8adec83c2949a796a8cd54c2c4f203'
+    )
+    noticias_gaming = []
+    if response.status_code == 200:
+        noticias_gaming = response.json()
+    return Response(noticias_gaming)
+
+@api_view(['GET'])
+def api_noticias_games(request):
+    response = requests.get(
+        url='https://www.mmobomb.com/api1/latestnews'
+    )
+    noticias_juegos = []
+    if response.status_code == 200:
+        noticias_juegos = response.json()
+    return Response(noticias_juegos)

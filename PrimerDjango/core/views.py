@@ -7,6 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.contrib import messages
+from django.contrib.auth import logout
+from rest_framework.authtoken.models import Token
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 
 from .forms import CustomUserCreationForm
 from .decorators import role_required
@@ -75,7 +81,31 @@ def registro_dyn(request):
         }
         return render(request, 'menu/registro.html', contexto)
 
-    
+@role_required('cliente', 'staff', 'admin')
+def admincuenta_dyn(request):
+    return render(request, 'menu/admincuenta.html')
+
+@role_required('cliente', 'staff', 'admin')
+def admincuenta_dyn(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('oldPassword')
+        new_password = request.POST.get('password')
+
+        user = request.user
+
+        # Verifica la contraseña actual
+        if not user.check_password(old_password):
+            messages.error(request, 'La contraseña actual es incorrecta.')
+            return render(request, 'menu/admincuenta.html')
+
+        # Cambia la contraseña
+        user.set_password(new_password)
+        user.save()
+        logout(request)  # Cierra la sesión para que el usuario vuelva a iniciar sesión
+        messages.success(request, 'Contraseña cambiada correctamente. Por favor, inicia sesión de nuevo.')
+        return redirect('iniciosesion_dyn')
+
+    return render(request, 'menu/admincuenta.html')
 
 @role_required('cliente', 'staff', 'admin')
 def cerrarsesion_dyn(request):
@@ -245,50 +275,6 @@ def editar_marca(request, id):
     }
     return render(request, 'productos/editarmarca.html', context)
 
-@role_required('cliente', 'staff', 'admin')
-def admincuenta_dyn(request):
-    return render(request, 'menu/admincuenta.html')
-
-'''
-@role_required('cliente', 'staff', 'admin')
-def admincuenta_dyn(request):
-    if request.method == 'POST':
-        new_password = request.POST.get('password')
-        confirm_password = request.POST.get('confirmPassword')
-
-        if new_password == confirm_password:
-            user = request.user
-            user.set_password(new_password)
-            user.save()
-            messages.success(request, 'Contraseña actualizada correctamente. Por favor, inicia sesión de nuevo.')
-            return redirect('admincuenta_dyn')
-        else:
-            messages.error(request, 'Las contraseñas no coinciden. Inténtalo de nuevo.')
-    return render(request, 'menu/admincuenta.html')
-'''
-
-@role_required('cliente', 'staff', 'admin')
-def admincuenta_dyn(request):
-    if request.method == 'POST':
-        old_password = request.POST.get('oldPassword')
-        new_password = request.POST.get('password')
-
-        user = request.user
-
-        # Verifica la contraseña actual
-        if not user.check_password(old_password):
-            messages.error(request, 'La contraseña actual es incorrecta.')
-            return render(request, 'menu/admincuenta.html')
-
-        # Cambia la contraseña
-        user.set_password(new_password)
-        user.save()
-        logout(request)  # Cierra la sesión para que el usuario vuelva a iniciar sesión
-        messages.success(request, 'Contraseña cambiada correctamente. Por favor, inicia sesión de nuevo.')
-        return redirect('iniciosesion_dyn')
-
-    return render(request, 'menu/admincuenta.html')
-
 @role_required('staff', 'admin')
 def editar_categoria(request, id):
     categoria = get_object_or_404(Categoria, id=id)
@@ -419,7 +405,59 @@ def api_noticias_games(request):
         noticias_juegos = response.json()
     return Response(noticias_juegos)
 
-from django.contrib import messages
-from django.contrib.auth import logout
 
 
+@api_view(['POST'])
+def api_login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    if username is None or password is None:
+        return Response({
+            'success': False,
+            'message': 'Por favor, ingrese ambos campos: username y password.',
+            'time': datetime.datetime.now(),
+            'data': [],
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    user = authenticate(username=username, password=password)
+    if user:
+        token, created = Token.objects.get_or_create(user=user)
+        respuesta = {
+            'success': True,
+            'message': 'Inicio de sesión exitoso.',
+            'time': datetime.datetime.now(),
+            'token': token.key,
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email
+            }
+        }
+        return Response(respuesta)
+    else:
+        return Response({
+            'success': False,
+            'message': 'Credenciales inválidas. Inténtelo de nuevo.',
+            'time': datetime.datetime.now(),
+            'data': []
+        }, status=status.HTTP_401_UNAUTHORIZED)   
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_perfil_user(request):
+    user = request.user
+    perfil = UserProfile.objects.get(user=user)
+    respuesta = {
+        'success': True,
+        'message': 'Perfil del usuario autenticado.',
+        'time': datetime.datetime.now(),
+        'data': {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'role': perfil.role
+        }
+    }
+    return Response(respuesta)

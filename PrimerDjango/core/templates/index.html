@@ -1,12 +1,27 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block titulopagina %}Inicio{% endblock %}
-                {% block menunavegacion %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav class="navbar bg-dark navbar-expand-lg navbar-dark sticky-top shadow mb-0">
+        <div class="container">
+            <img src="{% static 'assets/images/chromie.jpg' %}" alt="Icono de Chromie Computers" width="40" height="40" class="img-icon-logo d-inline-block align-text-top rounded-circle">
+            <a class="navbar-brand" href="{% url 'index_dyn' %}">Chromie Computers</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-dark" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
                     {% if not user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="">Hola {{ request.user.username }}!</a></li>
                         {% if perfil == 'admin' %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'lista_productos' %}">Panel de Administrador</a></li>
                         {% endif %}
@@ -14,71 +29,89 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'admincuenta_dyn' %}">Administrar Cuenta</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'cerrarsesion_dyn' %}">Salir</a></li>
                     {% endif %}
-                {% endblock %}
-{% block imagenbanner %}"{% static 'assets/images/chromiew.jpg' %}"{% endblock %}
-            {% block descbanner %}
-                <h3 class="card-title">Categorias</h3>
-                <h6 class="card-text">Explora nuestras categorías de componentes de computador y encuentra todo lo que necesitas para armaro mejorar tu PC. Desde procesadores y tarjetas gráficas hasta memorias RAM, discos duros, fuentes de poder y más.</h6>
-            {% endblock %}
-{% block contenido %}
-        <div class="box shadow p-4">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-                <div class="col">
-                    <div class="card text-bg-dark shadow">
-                        <img src="{% static 'assets/images/procesador-cat.webp' %}" class="card-img" alt="img_cat">
-                        <div class="card-img-overlay d-flex justify-content-center align-items-center h-100">
-                            <h3 class="card-title text-center"><a class="nav-link" href="{% url 'procesadores_dyn' %}">Procesadores</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card text-bg-dark shadow">
-                        <img src="{% static 'assets/images/placamadre-cat.jpg' %}" class="card-img" alt="img_cat">
-                        <div class="card-img-overlay d-flex justify-content-center align-items-center h-100">
-                            <h3 class="card-title text-center"><a class="nav-link" href="{% url 'placasmadres_dyn' %}">Placas Madre</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card text-bg-dark shadow">
-                        <img src="{% static 'assets/images/grafica-cat.jpg' %}" class="card-img" alt="img_cat">
-                        <div class="card-img-overlay d-flex justify-content-center align-items-center h-100">
-                            <h3 class="card-title text-center"><a class="nav-link" href="{% url 'tarjetasdevideo_dyn' %}">Tarjetas Graficas</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card text-bg-dark shadow">
-                        <img src="{% static 'assets/images/ram-cat.webp' %}" class="card-img" alt="img_cat">
-                        <div class="card-img-overlay d-flex justify-content-center align-items-center h-100">
-                            <h3 class="card-title text-center"><a class="nav-link" href="{% url 'memorias_dyn' %}">Memorias RAM</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card text-bg-dark shadow">
-                        <img src="{% static 'assets/images/disk-cat.jpg' %}" class="card-img" alt="img_cat">
-                        <div class="card-img-overlay d-flex justify-content-center align-items-center h-100">
-                            <h3 class="card-title text-center"><a class="nav-link" href="{% url 'almacenamiento_dyn' %}">Unidades de almacenamiento</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card text-bg-dark shadow">
-                        <img src="{% static 'assets/images/fuente-cat.webp' %}" class="card-img" alt="img_cat">
-                        <div class="card-img-overlay d-flex justify-content-center align-items-center h-100">
-                            <h3 class="card-title text-center"><a class="nav-link" href="{% url 'fuentes_dyn' %}">Fuentes de Poder</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card text-bg-dark shadow">
-                        <img src="{% static 'assets/images/gabinete-cat.webp' %}" class="card-img" alt="img_cat">
-                        <div class="card-img-overlay d-flex justify-content-center align-items-center h-100">
-                            <h3 class="card-title text-center"><a class="nav-link" href="{% url 'gabinetes_dyn' %}">Gabinetes</a></h3>
-                        </div>
-                    </div>
-                </div>                          
+                </ul>
             </div>
         </div>
-{% endblock %}
+    </nav>
+
+    <nav class="navbar bg-dark navbar-expand-lg navbar-dark sticky-top shadow mb-0">
+        <div class="container">
+            <div class="collapse navbar-collapse bg-dark" id="navbarNav">
+                <div class="navbar-nav ms-auto" id="categoriesNav">
+                    <button class="btn category-btn all-products me-2 mb-2 mb-lg-0" style="color: #b1b1b1;" onclick="mostrarTodosLosProductos()">
+                        <i class="fas fa-th-large"></i> Todos los Productos
+                    </button>
+                    <!-- Las categorías se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="banner mt-0" style="margin-top:0; padding-top:0;">
+        <img id="bannerCat" src="{% static 'assets/images/chromiew.jpg' %}" alt="Banner principal" class="d-block w-100">
+            <div class="banner-text text-center mt-4">
+                {% block descbanner %}
+                <h3 class="card-title" id="sectionTitle">Todos Nuestros Productos</h3>
+                <h6 class="card-text">Explora nuestras categorías de componentes de computador y encuentra todo lo que necesitas para armaro mejorar tu PC. Desde procesadores y tarjetas gráficas hasta memorias RAM, discos duros, fuentes de poder y más.</h6>
+                {% endblock %}
+            </div>
+    </section>
+
+    <div class="container-fluid py-5">
+        <div class="container">
+
+            <!-- Loading -->
+            <div class="d-flex justify-content-center align-items-center" id="loading" style="height: 200px;">
+                <div class="spinner-custom me-3"></div>
+                <span class="fs-5 text-warning">Cargando productos...</span>
+            </div>
+
+            <!-- Grid de productos Bootstrap responsivo -->
+            <div class="row g-4" id="productsGrid" style="display: none;">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </div>
+
+            <!-- Mensaje cuando no hay productos -->
+            <div class="text-center py-5" id="noProducts" style="display: none;">
+                <div class="no-products-message">
+                    <i class="fas fa-box-open d-block mb-3"></i>
+                    <p class="fs-4">No se encontraron productos en esta categoría</p>
+                </div>
+            </div>
+
+            <!-- Mensaje de error -->
+            <div class="alert error-message d-none" id="errorMessage" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span id="errorText">Error al cargar los datos</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-5">
+        <div class="container">
+            <h3 class="card-title">Noticias sobre Hardware</h3>
+            <div class="row g-4" id="noticiasContainer" style="display: none;">
+                <!-- Las noticias se cargarán dinámicamente aquí -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-5">
+        <div class="container">
+            <h3 class="card-title">Noticias sobre Gaming</h3>
+            <div class="row g-4" id="noticiasContainerTwo" style="display: none;">
+                <!-- Las noticias 2 se cargarán dinámicamente aquí -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-center text-lg-start mt-4 shadow d-flex justify-content-center">
+        <div class="text-center p-3">© 2025 Chromie Computers</div>
+        <div class="text-center p-3">Contacto: contacto@chromiestore.com</div>
+    </footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{% static 'javascript/cargarapi.js' %}"></script>
+</html>

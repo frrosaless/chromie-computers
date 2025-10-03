@@ -28,8 +28,9 @@ footer {
 .banner {
     position: relative;
     text-align: center;
-    padding-top: 50px;
     color: rgb(255, 255, 255);
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .banner img{
@@ -38,11 +39,12 @@ footer {
     object-fit: cover;
     display: block;
     opacity: 40%;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .banner-text {
     position: absolute;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 2em;
@@ -71,4 +73,8 @@ main.container {
 
 .box{
     background-color: #2c3238;
+}
+
+.btn.all-products {
+    color: #b1b1b1 !important;
 }

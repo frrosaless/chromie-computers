@@ -16,7 +16,7 @@ from rest_framework.decorators import permission_classes
 
 from .forms import CustomUserCreationForm
 from .decorators import role_required
-from .models import Categoria, Marca, Producto, UserProfile
+from .models import Categoria, Marca, Producto, UserProfile, Client
 from .serializers import CategoriaSerializer, MarcaSerializer, ProductoSerializer
 
 # Create your views here.
@@ -29,8 +29,6 @@ def index_dyn(request):
     return render(request, 'index.html', context)
 
 # vistas para las paginas del menu
-def registro_dyn(request):
-    return render(request, 'menu/registro.html')
 
 def iniciosesion_dyn(request):
     if request.method == 'POST':
@@ -67,7 +65,8 @@ def registro_dyn(request):
     if request.method == 'POST':
         formularioregistro = CustomUserCreationForm(request.POST)
         if formularioregistro.is_valid():
-            formularioregistro.save()
+            user = formularioregistro.save()
+            UserProfile.objects.create(user=user, role='cliente')
             return redirect('iniciosesion_dyn')
         else:
             contexto = {
@@ -87,6 +86,7 @@ def admincuenta_dyn(request):
 
 @role_required('cliente', 'staff', 'admin')
 def admincuenta_dyn(request):
+
     if request.method == 'POST':
         old_password = request.POST.get('oldPassword')
         new_password = request.POST.get('password')
@@ -99,10 +99,13 @@ def admincuenta_dyn(request):
             return render(request, 'menu/admincuenta.html')
 
         # Cambia la contraseña
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
         user.set_password(new_password)
         user.save()
         logout(request)  # Cierra la sesión para que el usuario vuelva a iniciar sesión
-        messages.success(request, 'Contraseña cambiada correctamente. Por favor, inicia sesión de nuevo.')
+        messages.success(request, 'Datos actualizados correctamente. Por favor, inicia sesión de nuevo.')
         return redirect('iniciosesion_dyn')
 
     return render(request, 'menu/admincuenta.html')
@@ -315,6 +318,7 @@ def eliminar_categoria(request, id):
 
 # definicion de api views
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_categorias(request):
     categorias = Categoria.objects.all()
     serializer = CategoriaSerializer(categorias, many=True)
@@ -328,6 +332,7 @@ def api_categorias(request):
     return Response(respuesta)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_productos(request):
     productos = Producto.objects.all()
     serializer = ProductoSerializer(productos, many=True)
@@ -341,6 +346,7 @@ def api_productos(request):
     return Response(respuesta)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_productos_categoria(request, idcategoria=None):
     try:
         categoria = Categoria.objects.get(id=idcategoria)
@@ -372,6 +378,7 @@ def api_productos_categoria(request, idcategoria=None):
     '''
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_marcas(request):
     marcas = Marca.objects.all()
     serializer = MarcaSerializer(marcas, many=True)

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Cliente
+from .models import Client
 
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, help_text='Required. 3-50 characters.', label='first_name', widget=forms.TextInput(attrs={'id': 'first_name', 'name': 'first_name'}))
@@ -22,17 +22,27 @@ class CustomUserCreationForm(UserCreationForm):
         self.fields['email'].widget.attrs.update({'id': 'email', 'name': 'email'})
         self.fields['password1'].widget.attrs.update({'id': 'password1', 'name': 'password1'})
         self.fields['password2'].widget.attrs.update({'id': 'password2', 'name': 'password2'})
-
+'''
     def save(self, commit=True):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
         if commit:
+            Cliente.objects.create(
+                user=user,
+                address=self.cleaned_data['address'],
+                birthdate=self.cleaned_data['birhtdate']
+            )
             user.save()
-            """ Assuming you have a profile model to save additional fields
-            user.Cliente.direccion = self.cleaned_data['address']
-            user.Cliente.nacimiento = self.cleaned_data['birthdate']
-            user.Cliente.save()
-            """
+        return user
+'''
+def save(self, commit=True):
+        user = super().save(commit=commit)
+        if commit:
+            Client.objects.create(
+                user=user,
+                address=self.cleaned_data['address'],
+                birthdate=self.cleaned_data['birthdate']
+            )
         return user

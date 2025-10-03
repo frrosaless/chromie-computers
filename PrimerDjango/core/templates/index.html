@@ -22,6 +22,7 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'registro_dyn' %}">Registro</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'iniciosesion_dyn' %}">Iniciar sesion</a></li>
                     {% else %}
+                        <li class="nav-item"><a class="nav-link" href="">Hola {{ request.user.username }}!</a></li>
                         {% if perfil == 'admin' %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'lista_productos' %}">Panel de Administrador</a></li>
                         {% endif %}

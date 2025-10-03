@@ -21,8 +21,17 @@
             {% endblock %}
 {% block contenido %}
         <div class="box shadow p-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == "error" %}danger{% else %}{{ message.tags }}{% endif %} alert.dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
             <h1 class="text-white">Cambiar contraseña</h1>
-            <form id="form-cambioContrasena" class="text-white w-100 mx-auto" method="post">
+            <form id="form-cambioContrasena" class="text-white w-100 mx-auto" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="mb-3">
                     <label for="oldPassword" class="form-label">Contraseña actual <span style="color: red;">*</span></label>
                     <input type="password" class="form-control" id="oldPassword" name="oldPassword" autocomplete="off" placeholder="Ingresa tu contraseña actual">

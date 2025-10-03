@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 from core.views import index_dyn, registro_dyn, iniciosesion_dyn, cerrarsesion_dyn, carrito_dyn, admincuenta_dyn, olvidecontrasena_dyn, almacenamiento_dyn
 from core.views import fuentes_dyn, gabinetes_dyn, memorias_dyn, placasmadres_dyn, procesadores_dyn, tarjetasdevideo_dyn, almace_wd_dyn
 from core.views import fuente_giga_dyn, gab_antec_dyn, placa_giga_dyn, proce_intel_dyn, ram_king_dyn, video_giga_dyn, api_categorias, api_productos_categoria
-from core.views import api_marcas, api_noticias_gaming, api_noticias_games
+from core.views import api_marcas, api_noticias_gaming, api_noticias_games, api_productos
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -48,9 +48,10 @@ urlpatterns = [
     path("video-giga/", video_giga_dyn, name="video_giga_dyn"),
     path("cerrar_sesion/", cerrarsesion_dyn, name="cerrarsesion_dyn"),
     path('', include('core.urls')),
-    path('api/categorias', api_categorias, name='api_categorias'),
+    path('api/categorias/', api_categorias, name='api_categorias'),
     path('api/productos/categoria/<int:idcategoria>/', api_productos_categoria, name='api_productos_por_categoria'),
-    path('api/marcas', api_marcas, name='api_marcas'),
-    path('api/noticias/gaming', api_noticias_gaming, name='api_noticias_gaming'),
-    path('api/noticias/games', api_noticias_games, name='api_noticias_games'),
+    path('api/marcas/', api_marcas, name='api_marcas'),
+    path('api/noticias/gaming/', api_noticias_gaming, name='api_noticias_gaming'),
+    path('api/noticias/games/', api_noticias_games, name='api_noticias_games'),
+    path('api/productos/', api_productos, name='api_productos'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

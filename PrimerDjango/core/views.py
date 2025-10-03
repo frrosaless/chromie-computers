@@ -1,3 +1,4 @@
+import datetime
 import requests
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.forms import AuthenticationForm
@@ -6,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
 
 from .forms import CustomUserCreationForm
 from .decorators import role_required
@@ -85,10 +85,6 @@ def cerrarsesion_dyn(request):
 @role_required('cliente', 'staff', 'admin')
 def carrito_dyn(request):
     return render(request, 'menu/carrito.html')
-
-@role_required('cliente', 'staff', 'admin')
-def admincuenta_dyn(request):
-    return render(request, 'menu/admincuenta.html')
 
 def olvidecontrasena_dyn(request):
     return render(request, 'menu/olvidecontrasena.html')
@@ -249,6 +245,50 @@ def editar_marca(request, id):
     }
     return render(request, 'productos/editarmarca.html', context)
 
+@role_required('cliente', 'staff', 'admin')
+def admincuenta_dyn(request):
+    return render(request, 'menu/admincuenta.html')
+
+'''
+@role_required('cliente', 'staff', 'admin')
+def admincuenta_dyn(request):
+    if request.method == 'POST':
+        new_password = request.POST.get('password')
+        confirm_password = request.POST.get('confirmPassword')
+
+        if new_password == confirm_password:
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, 'Contraseña actualizada correctamente. Por favor, inicia sesión de nuevo.')
+            return redirect('admincuenta_dyn')
+        else:
+            messages.error(request, 'Las contraseñas no coinciden. Inténtalo de nuevo.')
+    return render(request, 'menu/admincuenta.html')
+'''
+
+@role_required('cliente', 'staff', 'admin')
+def admincuenta_dyn(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('oldPassword')
+        new_password = request.POST.get('password')
+
+        user = request.user
+
+        # Verifica la contraseña actual
+        if not user.check_password(old_password):
+            messages.error(request, 'La contraseña actual es incorrecta.')
+            return render(request, 'menu/admincuenta.html')
+
+        # Cambia la contraseña
+        user.set_password(new_password)
+        user.save()
+        logout(request)  # Cierra la sesión para que el usuario vuelva a iniciar sesión
+        messages.success(request, 'Contraseña cambiada correctamente. Por favor, inicia sesión de nuevo.')
+        return redirect('iniciosesion_dyn')
+
+    return render(request, 'menu/admincuenta.html')
+
 @role_required('staff', 'admin')
 def editar_categoria(request, id):
     categoria = get_object_or_404(Categoria, id=id)
@@ -292,22 +332,71 @@ def eliminar_categoria(request, id):
 def api_categorias(request):
     categorias = Categoria.objects.all()
     serializer = CategoriaSerializer(categorias, many=True)
-    return Response(serializer.data)
+    respuesta = {
+        'success': True,
+        'message': 'Lista de categorías',
+        'total': len(serializer.data),
+        'time': datetime.datetime.now(),
+        'data': serializer.data
+    }
+    return Response(respuesta)
+
+@api_view(['GET'])
+def api_productos(request):
+    productos = Producto.objects.all()
+    serializer = ProductoSerializer(productos, many=True)
+    respuesta = {
+        'success': True,
+        'message': 'Lista de productos',
+        'total': len(serializer.data),
+        'time': datetime.datetime.now(),
+        'data': serializer.data
+    }
+    return Response(respuesta)
 
 @api_view(['GET'])
 def api_productos_categoria(request, idcategoria=None):
+    try:
+        categoria = Categoria.objects.get(id=idcategoria)
+        productos = Producto.objects.filter(categoria_id=categoria)
+        serializer = ProductoSerializer(productos, many=True)
+        respuesta = {
+            'success': True,
+            'message': 'Lista de productos por categoría',
+            'total': len(serializer.data),
+            'time': datetime.datetime.now(),
+            'data': serializer.data
+        }
+        return Response(respuesta)
+    except Categoria.DoesNotExist:
+        respuesta = {
+            'success': False,
+            'message': 'Categoría no encontrada',
+            'time': datetime.datetime.now(),
+            'data': []
+        }
+        return Response(respuesta, status=404)
+    '''
     if idcategoria:
         productos = Producto.objects.filter(categoria_id=idcategoria)
     else:
         productos = Producto.objects.all()
     serializer = ProductoSerializer(productos, many=True)
     return Response(serializer.data)
+    '''
 
 @api_view(['GET'])
 def api_marcas(request):
     marcas = Marca.objects.all()
     serializer = MarcaSerializer(marcas, many=True)
-    return Response(serializer.data)
+    respuesta = {
+        'success': True,
+        'message': 'Lista de marcas',
+        'total': len(serializer.data),
+        'time': datetime.datetime.now(),
+        'data': serializer.data
+    }
+    return Response(respuesta)
 
 # APIs externas de noticias
 @api_view(['GET'])
@@ -329,3 +418,8 @@ def api_noticias_games(request):
     if response.status_code == 200:
         noticias_juegos = response.json()
     return Response(noticias_juegos)
+
+from django.contrib import messages
+from django.contrib.auth import logout
+
+

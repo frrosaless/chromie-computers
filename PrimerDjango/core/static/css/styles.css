@@ -31,6 +31,7 @@ footer {
     color: rgb(255, 255, 255);
     margin-top: 0 !important;
     padding-top: 0 !important;
+    min-height: 220px;
 }
 
 .banner img{
@@ -38,17 +39,20 @@ footer {
     height: 220px;
     object-fit: cover;
     display: block;
-    opacity: 40%;
+    opacity: 0.4;
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
 
 .banner-text {
     position: absolute;
+    top: 50%;  
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 2em;
     font-weight: bold;
+    width: 100%;
+    text-shadow: 0 2px 8px #000;
 }
 
 .card-img {

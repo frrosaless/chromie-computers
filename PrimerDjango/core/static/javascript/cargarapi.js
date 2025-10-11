@@ -164,11 +164,7 @@ function renderizarProductos() {
     productsGrid.style.display = 'flex';
     productsGrid.classList.remove('d-none');
     
-    // Grid responsivo de Bootstrap: 
-    // - sm: 1 columna en móviles pequeños
-    // - md: 2 columnas en tablets 
-    // - lg: 3 columnas en pantallas grandes
-    // - xl: 4 columnas en pantallas extra grandes
+    // Grid responsivo de Bootstrap: - sm: 1 columna en móviles pequeños- md: 2 columnas en tablets - lg: 3 columnas en pantallas grandes- xl: 4 columnas en pantallas extra grandes
     productsGrid.innerHTML = productosActuales.map(producto => `
         <div class="col-12 col-md-6 col-lg-4 col-xl-3">
             <div class="card product-card text-bg-dark h-100">
@@ -187,6 +183,7 @@ function renderizarProductos() {
                     <div class="text-center mt-auto">
                         <div class="product-price">$${parseFloat(producto.precio).toLocaleString('es-CL')}</div>
                     </div>
+                    <a href="/carrito/agregar/${producto.id}/" class="btn btn-secondary w-100">Agregar al carrito</a>
                 </div>
             </div>
         </div>

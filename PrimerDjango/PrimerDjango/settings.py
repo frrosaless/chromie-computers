@@ -161,3 +161,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
 }
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'

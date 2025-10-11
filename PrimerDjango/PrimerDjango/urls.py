@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 from core.views import index_dyn, registro_dyn, iniciosesion_dyn, cerrarsesion_dyn, carrito_dyn, admincuenta_dyn, olvidecontrasena_dyn, almacenamiento_dyn
 from core.views import fuentes_dyn, gabinetes_dyn, memorias_dyn, placasmadres_dyn, procesadores_dyn, tarjetasdevideo_dyn, almace_wd_dyn
 from core.views import fuente_giga_dyn, gab_antec_dyn, placa_giga_dyn, proce_intel_dyn, ram_king_dyn, video_giga_dyn, api_categorias, api_productos_categoria
-from core.views import api_marcas, api_noticias_gaming, api_noticias_games, api_productos, api_login, api_perfil_user
+from core.views import api_marcas, api_noticias_gaming, api_noticias_games, api_productos, api_login, api_perfil_user, ver_carrito, agregar_al_carrito, eliminar_del_carrito
+from core.views import actualizar_datos_dyn, cambiar_contrasena_dyn
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -56,4 +57,11 @@ urlpatterns = [
     path('api/productos/', api_productos, name='api_productos'),
     path('api/auth/login/', api_login, name='api_login'),
     path('api/auth/perfil/', api_perfil_user, name='api_perfil'),
+    path('carrito/', ver_carrito, name='ver_carrito'),
+    path('carrito/agregar/<int:producto_id>/', agregar_al_carrito, name='agregar_al_carrito'),
+    path('carrito/eliminar/<int:producto_id>/', eliminar_del_carrito, name='eliminar_del_carrito'),
+    path('cuenta/', admincuenta_dyn, name='admincuenta_dyn'),  # Página principal de cuenta
+    path('cuenta/actualizar/', actualizar_datos_dyn, name='actualizar_datos_dyn'),
+    path('cuenta/cambiar-contrasena/', cambiar_contrasena_dyn, name='cambiar_contrasena_dyn'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

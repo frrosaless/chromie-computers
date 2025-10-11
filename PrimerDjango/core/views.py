@@ -85,7 +85,19 @@ def admincuenta_dyn(request):
     return render(request, 'menu/admincuenta.html')
 
 @role_required('cliente', 'staff', 'admin')
-def admincuenta_dyn(request):
+def actualizar_datos_dyn(request):
+    user = request.user
+    if request.method == 'POST':
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.save()
+        messages.success(request, 'Datos actualizados correctamente.')
+        return redirect('admincuenta_dyn')
+    return render(request, 'menu/admincuenta.html', {'user': user})
+
+@role_required('cliente', 'staff', 'admin')
+def cambiar_contrasena_dyn(request):
 
     if request.method == 'POST':
         old_password = request.POST.get('oldPassword')
@@ -99,9 +111,6 @@ def admincuenta_dyn(request):
             return render(request, 'menu/admincuenta.html')
 
         # Cambia la contraseña
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
         user.set_password(new_password)
         user.save()
         logout(request)  # Cierra la sesión para que el usuario vuelva a iniciar sesión
@@ -117,7 +126,20 @@ def cerrarsesion_dyn(request):
 
 @role_required('cliente', 'staff', 'admin')
 def carrito_dyn(request):
-    return render(request, 'menu/carrito.html')
+    carrito = request.session.get('carrito', {})
+    productos = []
+    total = 0
+    for producto_id, cantidad in carrito.items():
+        producto = Producto.objects.get(id=producto_id)
+        subtotal = producto.precio * cantidad
+        productos.append({
+            'producto': producto,
+            'cantidad': cantidad,
+            'subtotal': subtotal
+        })
+        total += subtotal
+    contexto = {'productos': productos, 'total': total}
+    return render(request, 'menu/carrito.html', contexto)
 
 def olvidecontrasena_dyn(request):
     return render(request, 'menu/olvidecontrasena.html')
@@ -468,3 +490,43 @@ def api_perfil_user(request):
         }
     }
     return Response(respuesta)
+
+from django.shortcuts import get_object_or_404, redirect
+from .models import Producto
+
+def agregar_al_carrito(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    carrito = request.session.get('carrito', {})
+
+    # Si el producto ya está en el carrito, suma 1, si no, lo agrega
+    if str(producto_id) in carrito:
+        carrito[str(producto_id)] += 1
+    else:
+        carrito[str(producto_id)] = 1
+
+    request.session['carrito'] = carrito
+    request.session.modified = True
+    return redirect(request.META.get('HTTP_REFERER', 'ver_carrito'))
+
+def eliminar_del_carrito(request, producto_id):
+    carrito = request.session.get('carrito', {})
+    if str(producto_id) in carrito:
+        del carrito[str(producto_id)]
+        request.session['carrito'] = carrito
+    return redirect('ver_carrito')
+
+def ver_carrito(request):
+    carrito = request.session.get('carrito', {})
+    productos = []
+    total = 0
+    for producto_id, cantidad in carrito.items():
+        producto = Producto.objects.get(id=producto_id)
+        subtotal = producto.precio * cantidad
+        productos.append({
+            'producto': producto,
+            'cantidad': cantidad,
+            'subtotal': subtotal
+        })
+        total += subtotal
+    contexto = {'productos': productos, 'total': total}
+    return render(request, 'menu/carrito.html', contexto)
